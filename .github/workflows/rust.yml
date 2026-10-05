@@ -4,6 +4,7 @@ on:
   push:
     branches: ["master"]
     tags: ["v*"]
+
   pull_request:
     branches: ["master"]
 
@@ -29,7 +30,8 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
@@ -50,7 +52,7 @@ jobs:
         run: cargo test --verbose
 
       - name: Upload artifact
-        if: startsWith(github.ref, 'refs/tags/')
+        if: github.ref_type == 'tag'
         uses: actions/upload-artifact@v4
         with:
           name: YuraEscape-${{ matrix.name }}
@@ -58,12 +60,10 @@ jobs:
 
   release:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/')
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Download Linux artifact
         uses: actions/download-artifact@v5
         with:

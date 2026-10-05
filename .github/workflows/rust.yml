@@ -62,6 +62,8 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download Linux artifact
         uses: actions/download-artifact@v5
         with:
@@ -79,6 +81,7 @@ jobs:
           gh release create "${{ github.ref_name }}" \
             release/linux/YuraEscape \
             release/windows/YuraEscape.exe \
-            --generate-notes
+            --generate-notes \
+            --repo "${{ github.repository }}"
         env:
           GH_TOKEN: ${{ github.token }}

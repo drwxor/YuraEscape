@@ -1,0 +1,6 @@
+If you want to make another maze use https://keesiemeijer.github.io/maze-generator with Wall Thickness set to 1
+
+rgb3(255, 0, 0) - YURA SPAWN
+rgb3(0, 255, 0)- PLAYER SPAWN
+rgb3(0, 0, 255)- EXIT
+rgb3(255, 0, 255) -  INJECTOR

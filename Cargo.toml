@@ -1,0 +1,10 @@
+[package]
+name = "YuraEscape"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+raylib = {
+    package = "sola-raylib",
+    version = "6.3.1"
+}

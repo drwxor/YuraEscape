@@ -20,12 +20,12 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y \
+            libgl1-mesa-dev \
             libx11-dev \
             libxrandr-dev \
             libxinerama-dev \
             libxcursor-dev \
-            libxi-dev \
-            libxext-dev
+            libxi-dev
 
       - name: Build
         run: cargo build --release --verbose

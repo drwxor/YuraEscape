@@ -28,6 +28,10 @@ impl Random {
         self.state.wrapping_mul(0x2545_F491_4F6C_DD1D)
     }
 
+    fn next_u8(&mut self) -> u8 {
+        self.next_u64() as u8
+    }
+
     pub fn get_f32(&mut self, min: f32, max: f32) -> f32 {
         let unit = (self.next_u64() >> 40) as f32 / (1u64 << 24) as f32;
         min + (max - min) * unit
@@ -36,5 +40,10 @@ impl Random {
     pub fn get_i32(&mut self, min: i32, max: i32) -> i32 {
         let range = (max as i64 - min as i64 + 1) as u64;
         (min as i64 + (self.next_u64() % range) as i64) as i32
+    }
+
+    pub fn get_u8(&mut self, min: u8, max: u8) -> u8 {
+        let range = max as u16 - min as u16 + 1;
+        min + (self.next_u8() as u16 % range) as u8
     }
 }

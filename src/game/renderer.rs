@@ -3,6 +3,7 @@ use raylib::ffi;
 use raylib::prelude::*;
 
 use crate::game::config;
+use crate::game::escape_shake::EscapeShake;
 use crate::game::flashlight::Flashlight;
 use crate::game::lighting_shader::LightingShaderManager;
 use crate::game::textures::Textures;
@@ -40,6 +41,7 @@ impl Renderer {
         textures: &Textures,
         yura_position: Vector3,
         hud: &HudInfo,
+        escape_shake: &mut EscapeShake,
     ) {
         let LightingShaderManager {
             depth_shader,
@@ -107,6 +109,8 @@ impl Renderer {
         }
 
         draw_gui(&mut d, hud);
+
+        escape_shake.draw(&mut d);
     }
 }
 

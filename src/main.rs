@@ -179,10 +179,6 @@ fn run(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
 
         time += frame_time;
 
-        if escape_shake.update(&rl, frame_time) {
-            break;
-        }
-
         player.update(&rl, &map, &mut camera_controller);
         camera_controller.update(&rl, &mut player, distance_from_yura);
         flashlight.update(frame_time, &camera_controller.current_camera);
@@ -217,6 +213,10 @@ fn run(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
             }
         }
 
+        if escape_shake.update(&rl, frame_time) {
+            break;
+        }
+
         renderer.draw_frame(
             &mut rl,
             &thread,
@@ -229,6 +229,7 @@ fn run(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
                 time,
                 stamina: player.stamina,
             },
+            &mut escape_shake,
         );
 
         yura.goal = player.position;
@@ -237,13 +238,15 @@ fn run(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
         let to_yura = player.position - yura.position;
         distance_from_yura = to_yura.dot(to_yura);
 
+        yura.speed += frame_time / 60.0;
+
         let near_volume = (40.0 - distance_from_yura).clamp(0.0, 40.0) / 10.0;
         musics.near.set_volume(near_volume);
 
         musics.ambient.update_stream();
         musics.near.update_stream();
 
-        if distance_from_yura <= 0.5 {
+        if distance_from_yura <= 1.0 {
             sounds.end.play();
             thread::sleep(Duration::from_millis(400));
             break;

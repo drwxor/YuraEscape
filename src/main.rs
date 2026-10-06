@@ -183,20 +183,22 @@ fn run(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
         camera_controller.update(&rl, &mut player, distance_from_yura);
         flashlight.update(frame_time, &camera_controller.current_camera);
 
-        let target_window_x = center_x as f32
-            + ((camera_controller.shake.x * 32.0) - camera_controller.given_offset.x
-                + camera_controller.bobbing.x)
-                * 256.0;
-        let target_window_y = center_y as f32
-            + ((camera_controller.shake.y * 32.0) - camera_controller.given_offset.y
-                + camera_controller.bobbing.y)
-                * 256.0;
-
         let escape_offset = escape_shake.offset();
 
+        let target_window_x = (center_x as f32
+            + ((camera_controller.shake.x * 32.0) - camera_controller.given_offset.x
+                + camera_controller.bobbing.x)
+                * 256.0)
+            + escape_offset.x;
+        let target_window_y = (center_y as f32
+            + ((camera_controller.shake.y * 32.0) - camera_controller.given_offset.y
+                + camera_controller.bobbing.y)
+                * 256.0)
+            + escape_offset.y;
+
         rl.set_window_position(
-            (target_window_x + escape_offset.x).round() as i32,
-            (target_window_y + escape_offset.y).round() as i32,
+            target_window_x.round() as i32,
+            target_window_y.round() as i32,
         );
 
         if player.move_direction.length() >= 1.0

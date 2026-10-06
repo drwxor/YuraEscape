@@ -238,7 +238,7 @@ fn run(args: &Args) -> Result<(), Box<dyn std::error::Error>> {
         let to_yura = player.position - yura.position;
         distance_from_yura = to_yura.dot(to_yura);
 
-        yura.speed += frame_time / 60.0;
+        yura.speed += frame_time / 240.0;
 
         let near_volume = (40.0 - distance_from_yura).clamp(0.0, 40.0) / 10.0;
         musics.near.set_volume(near_volume);
